@@ -32,9 +32,9 @@ ENV UV_COMPILE_BYTECODE=1 \
 COPY --chown=app:app mcp_server/pyproject.toml mcp_server/uv.lock ./
 
 # Install dependencies with cache mount
-RUN mkdir -p /app/.cache/uv && chmod -R u+rw /app/.cache
-RUN --mount=type=cache,id=s/9a6e0da9-4875-4d16-99b9-338347609f5f-/app/.cache/uv,target=/app/.cache/uv \
-    uv sync --frozen --no-dev
+# RUN mkdir -p /app/.cache/uv && chmod -R u+rw /app/.cache
+# RUN --mount=type=cache,id=s/9a6e0da9-4875-4d16-99b9-338347609f5f-/app/.cache/uv,target=/app/.cache/uv \
+RUN uv sync --frozen --no-dev
 
 # Copy application code
 COPY --chown=app:app mcp_server/graphiti_mcp_server.py ./
