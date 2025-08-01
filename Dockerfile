@@ -26,11 +26,15 @@ COPY ./graphiti_core ./graphiti_core
 
 # Build graphiti-core wheel
 # RUN --mount=type=cache,target=/root/.cache/uv \
-RUN uv build
+RUN --mount=type=cache,id=s/9a6e0da9-4875-4d16-99b9-338347609f5f-/app/.cache/uv,target=/app/.cache/uv \
+    uv build
+
+
 
 # Install the built wheel to make it available for server
 # RUN --mount=type=cache,target=/root/.cache/uv \
-RUN pip install dist/*.whl
+RUN --mount=type=cache,id=s/9a6e0da9-4875-4d16-99b9-338347609f5f-/app/.cache/uv,target=/app/.cache/uv \
+    pip install dist/*.whl
 
 # Runtime stage - build the server here
 FROM python:3.12-slim
@@ -68,7 +72,8 @@ COPY ./server/graph_service ./graph_service
 # Install server dependencies and application
 # RUN --mount=type=cache,target=/root/.cache/uv \
 #     uv sync --frozen --no-dev
-RUN uv sync --frozen --no-dev
+RUN --mount=type=cache,id=s/9a6e0da9-4875-4d16-99b9-338347609f5f-/app/.cache/uv,target=/app/.cache/uv \
+    uv sync --frozen --no-dev
 
 # Change ownership to app user
 RUN chown -R app:app /app
