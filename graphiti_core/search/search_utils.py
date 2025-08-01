@@ -302,7 +302,6 @@ async def node_fulltext_search(
     search_filter: SearchFilters,
     group_ids: list[str] | None = None,
     limit=RELEVANT_SCHEMA_LIMIT,
-    search_properties: list[str] | None = None,
 ) -> list[EntityNode]:
     # BM25 search to get top nodes
     fuzzy_query = fulltext_query(query, group_ids, driver.fulltext_syntax)
@@ -310,12 +309,8 @@ async def node_fulltext_search(
         return []
     filter_query, filter_params = node_search_filter_query_constructor(search_filter)
 
-    index_name = 'node_name_and_summary'
-    if search_properties:
-        index_name = 'node_' + '_and_'.join(search_properties)
-
     query = (
-        get_nodes_query(driver.provider, index_name, '$query')
+        get_nodes_query(driver.provider, 'node_name_and_summary', '$query')
         + """
         YIELD node AS n, score
         WHERE n:Entity AND n.group_id IN $group_ids

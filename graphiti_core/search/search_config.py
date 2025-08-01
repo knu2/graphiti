@@ -91,7 +91,6 @@ class NodeSearchConfig(BaseModel):
     sim_min_score: float = Field(default=DEFAULT_MIN_SCORE)
     mmr_lambda: float = Field(default=DEFAULT_MMR_LAMBDA)
     bfs_max_depth: int = Field(default=MAX_SEARCH_DEPTH)
-    bm25_search_properties: list[str] | None = Field(default=None)
 
 
 class EpisodeSearchConfig(BaseModel):
