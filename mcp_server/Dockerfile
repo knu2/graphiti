@@ -60,7 +60,8 @@ COPY --from=builder /app/dist/*.whl /tmp/
 
 # Install graphiti-core wheel first
 # RUN --mount=type=cache,target=/root/.cache/uv \
-RUN uv pip install --system /tmp/*.whl
+RUN --mount=type=cache,id=s/9a6e0da9-4875-4d16-99b9-338347609f5f-/app/.cache/uv,target=/app/.cache/uv \
+    uv pip install --system /tmp/*.whl
 
 # Set up the server application
 WORKDIR /app
