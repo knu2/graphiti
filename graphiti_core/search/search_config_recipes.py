@@ -197,6 +197,14 @@ NODE_HYBRID_SEARCH_CROSS_ENCODER = SearchConfig(
     limit=10,
 )
 
+# performs a keyword search over nodes
+NODE_KEYWORD_SEARCH = SearchConfig(
+    node_config=NodeSearchConfig(
+        search_methods=[NodeSearchMethod.bm25],
+        bm25_search_properties=["name"],
+    )
+)
+
 # performs a hybrid search over communities with rrf reranking
 COMMUNITY_HYBRID_SEARCH_RRF = SearchConfig(
     community_config=CommunitySearchConfig(
