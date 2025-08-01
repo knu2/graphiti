@@ -1,0 +1,7 @@
+[build]
+builder = "dockerfile"
+dockerfilePath = "mcp_server/Dockerfile"
+
+[deploy]
+startCommand = "uv run graphiti_mcp_server.py --transport sse"
+port = 8000
