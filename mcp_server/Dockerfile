@@ -26,6 +26,7 @@ COPY ./graphiti_core ./graphiti_core
 
 # Build graphiti-core wheel
 # RUN --mount=type=cache,target=/root/.cache/uv \
+RUN mkdir -p /app/.cache/uv && chmod -R u+rw /app/.cache
 RUN --mount=type=cache,id=s/9a6e0da9-4875-4d16-99b9-338347609f5f-/app/.cache/uv,target=/app/.cache/uv \
     uv build
 
