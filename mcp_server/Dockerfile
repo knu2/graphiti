@@ -57,8 +57,8 @@ RUN groupadd -r app && useradd -r -d /app -g app app
 COPY --from=builder /app/dist/*.whl /tmp/
 
 # Install graphiti-core wheel first
-RUN --mount=type=cache,target=/root/.cache/uv \
-    uv pip install --system /tmp/*.whl
+# RUN --mount=type=cache,target=/root/.cache/uv \
+RUN uv pip install --system /tmp/*.whl
 
 # Set up the server application
 WORKDIR /app

@@ -25,12 +25,12 @@ COPY ./pyproject.toml ./README.md ./
 COPY ./graphiti_core ./graphiti_core
 
 # Build graphiti-core wheel
-RUN --mount=type=cache,target=/root/.cache/uv \
-    uv build
+# RUN --mount=type=cache,target=/root/.cache/uv \
+RUN uv build
 
 # Install the built wheel to make it available for server
-RUN --mount=type=cache,target=/root/.cache/uv \
-    pip install dist/*.whl
+# RUN --mount=type=cache,target=/root/.cache/uv \
+RUN pip install dist/*.whl
 
 # Runtime stage - build the server here
 FROM python:3.12-slim
@@ -57,8 +57,8 @@ RUN groupadd -r app && useradd -r -d /app -g app app
 COPY --from=builder /app/dist/*.whl /tmp/
 
 # Install graphiti-core wheel first
-RUN --mount=type=cache,target=/root/.cache/uv \
-    uv pip install --system /tmp/*.whl
+# RUN --mount=type=cache,target=/root/.cache/uv \
+RUN uv pip install --system /tmp/*.whl
 
 # Set up the server application
 WORKDIR /app
