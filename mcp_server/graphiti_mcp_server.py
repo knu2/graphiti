@@ -31,6 +31,7 @@ from graphiti_core.nodes import EpisodeType, EpisodicNode
 from graphiti_core.search.search_config_recipes import (
     NODE_HYBRID_SEARCH_NODE_DISTANCE,
     NODE_HYBRID_SEARCH_RRF,
+    NODE_KEYWORD_SEARCH,
 )
 from graphiti_core.search.search_filters import SearchFilters
 from graphiti_core.utils.maintenance.graph_data_operations import clear_data
@@ -832,7 +833,8 @@ async def search_memory_nodes(
     group_ids: list[str] | None = None,
     max_nodes: int = 10,
     center_node_uuid: str | None = None,
-    entity: str = '',  # cursor seems to break with None
+    entity: str = '',
+    search_type: str = 'semantic',
 ) -> NodeSearchResponse | ErrorResponse:
     """Search the graph memory for relevant node summaries.
     These contain a summary of all of a node's relationships with other nodes.
@@ -845,6 +847,9 @@ async def search_memory_nodes(
         max_nodes: Maximum number of nodes to return (default: 10)
         center_node_uuid: Optional UUID of a node to center the search around
         entity: Optional single entity type to filter results (permitted: "Preference", "Procedure")
+        search_type: The type of search to perform. Can be 'semantic' (default) or 'keyword'.
+                     'semantic' search uses vector similarity on the node summary.
+                     'keyword' search performs a case-insensitive match on the node name.
     """
     global graphiti_client
 
@@ -858,7 +863,9 @@ async def search_memory_nodes(
         )
 
         # Configure the search
-        if center_node_uuid is not None:
+        if search_type == 'keyword':
+            search_config = NODE_KEYWORD_SEARCH.model_copy(deep=True)
+        elif center_node_uuid is not None:
             search_config = NODE_HYBRID_SEARCH_NODE_DISTANCE.model_copy(deep=True)
         else:
             search_config = NODE_HYBRID_SEARCH_RRF.model_copy(deep=True)

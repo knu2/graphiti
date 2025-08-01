@@ -292,7 +292,14 @@ async def node_search(
     search_results: list[list[EntityNode]] = list(
         await semaphore_gather(
             *[
-                node_fulltext_search(driver, query, search_filter, group_ids, 2 * limit),
+                node_fulltext_search(
+                    driver,
+                    query,
+                    search_filter,
+                    group_ids,
+                    2 * limit,
+                    config.bm25_search_properties,
+                ),
                 node_similarity_search(
                     driver, query_vector, search_filter, group_ids, 2 * limit, config.sim_min_score
                 ),
