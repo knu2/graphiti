@@ -66,8 +66,9 @@ COPY ./server/pyproject.toml ./server/README.md ./server/uv.lock ./
 COPY ./server/graph_service ./graph_service
 
 # Install server dependencies and application
-RUN --mount=type=cache,target=/root/.cache/uv \
-    uv sync --frozen --no-dev
+# RUN --mount=type=cache,target=/root/.cache/uv \
+#     uv sync --frozen --no-dev
+RUN uv sync --frozen --no-dev
 
 # Change ownership to app user
 RUN chown -R app:app /app
